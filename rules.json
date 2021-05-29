@@ -1,0 +1,13 @@
+{
+	"add": [
+		{
+			"value":"#kodadot has:links url:\"https://nft.kodadot.xyz\" -is:retweet",
+			"tag" : "hashtag"
+		},
+		{
+			"value":"@kodadot has:links url:\"https://nft.kodadot.xyz\" -is:retweet",
+			"tag": "mention"
+		}
+	]
+}
+ 

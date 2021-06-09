@@ -1,0 +1,11 @@
+version: "2"
+services:
+  kodanews:
+    build: .
+    environment:
+      NEWS_TELEGRAM_CHATID:
+      NEWS_TELEGRAM_TOKEN:
+      NEWS_TWITTER_TOKEN:
+      #NEWS_LOG_DEBUG: true
+      NEWS_MAINTAINER_CHATID:
+   

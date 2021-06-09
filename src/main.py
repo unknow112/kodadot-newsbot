@@ -20,20 +20,20 @@ def notify_log(*X):
     )
     
 
-url = (lambda X: namedtuple('Url', list(X.keys()))(**X))({
-    'tweet_stream'  : 'https://api.twitter.com/2/tweets/search/stream',
-    'tweet_detail' : 'https://api.twitter.com/2/tweets/%d',
-    'nft_mints': 'https://nft.kodadot.xyz',
-    'publish_telegram' : 'https://api.telegram.org/bot%s/sendMessage'
-})
+url = (lambda **X: namedtuple('Url', list(X.keys()))(**X))(
+    tweet_stream= 'https://api.twitter.com/2/tweets/search/stream',
+    tweet_detail= 'https://api.twitter.com/2/tweets/%d',
+    nft_mints= 'https://nft.kodadot.xyz',
+    publish_telegram= 'https://api.telegram.org/bot%s/sendMessage'
+)
 
 
-config = (lambda X: namedtuple('Config', list(X.keys()))(**X))({
-    'twitter_auth': {'Authorization' : 'Bearer %s' % os.getenv('NEWS_TWITTER_TOKEN')},
-    'telegram_token' : os.getenv('NEWS_TELEGRAM_TOKEN'),
-    'telegram_chatId': os.getenv('NEWS_TELEGRAM_CHATID'),
-    'maintainer_chatId': os.getenv('NEWS_MAINTAINER_CHATID')
-})
+config = (lambda **X: namedtuple('Config', list(X.keys()))(**X))(
+    twitter_auth= {'Authorization' : 'Bearer %s' % os.getenv('NEWS_TWITTER_TOKEN')},
+    telegram_token= os.getenv('NEWS_TELEGRAM_TOKEN'),
+    telegram_chatId= os.getenv('NEWS_TELEGRAM_CHATID'),
+    maintainer_chatId= os.getenv('NEWS_MAINTAINER_CHATID')
+)
 
 message_template = """I have just found this new mint: %s"""
 

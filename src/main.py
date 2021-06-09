@@ -21,7 +21,7 @@ def notify_log(*X):
     
 
 url = (lambda X: namedtuple('Url', list(X.keys()))(**X))({
-    'tweet_stream'  : 'http://127.0.0.1:5000/image/mmh.json', 
+    'tweet_stream'  : 'https://api.twitter.com/2/tweets/search/stream',
     'tweet_detail' : 'https://api.twitter.com/2/tweets/%d',
     'nft_mints': 'https://nft.kodadot.xyz',
     'publish_telegram' : 'https://api.telegram.org/bot%s/sendMessage'

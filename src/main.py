@@ -71,7 +71,7 @@ def broadcast_tweets(out_queue):
             publish(url.publish_telegram % config.telegram_token, params={'chat_id':config.telegram_chatId ,'text':msg})
 
 
-def consume_tweets(out_queue):
+def consume_tweets(out_queue, kill_queue):
     debug("Consumer init")
     while True:
         try: 
@@ -79,6 +79,8 @@ def consume_tweets(out_queue):
             debug("Consumer: stream.status_code = %d, stream.request.url = %s" \
                   %(stream.status_code, stream.request.url))
             for tweet in stream.iter_lines(): #TODO connection retention #TODO remember broadcasted art
+                if not kill_queue.empty():
+                    return 
                 debug('Consumer: recv of line=%s'% tweet)
                 if tweet:
                     out_queue.put(json.loads(tweet))
@@ -94,13 +96,17 @@ def consume_tweets(out_queue):
 
 def main():
     q = queue.Queue()
-    consume = threading.Thread(target=consume_tweets, args=(q,), name='Consumer')
+    k = queue.Queue() #TODO: i want asyncio i think
+    consume = threading.Thread(target=consume_tweets, args=(q,k), name='Consumer')
     broadcast = threading.Thread(target=broadcast_tweets, args=(q,), name='Broadcaster')
-    consume.start()
-    broadcast.start()
-    consume.join()
-    broadcast.join()
-
+    try:
+        consume.start()
+        broadcast.start()
+        consume.join()
+        broadcast.join()
+    except KeyboardInterrupt:
+        q.put(None) 
+        k.put(None)    
 
 if __name__ == '__main__':
     main()
